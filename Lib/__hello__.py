@@ -10,7 +10,7 @@ class TestFrozenUtf8_4:
     """\U0001f600"""
 
 def main():
-    print("Hello world!")
+    print("👋🏽 🌍!")
 
 if __name__ == '__main__':
     main()
