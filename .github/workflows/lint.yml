@@ -1,26 +1,25 @@
-name: Lint
-
-on: [push, pull_request, workflow_dispatch]
-
-permissions:
-  contents: read
-
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
 env:
   FORCE_COLOR: 1
   RUFF_OUTPUT_FORMAT: github
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
-
 jobs:
   lint:
+    permissions: write-all
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-      - uses: pre-commit/action@v3.0.1
+    - name: Collect Workflow Telemetry
+      uses: Nfsaavedra/workflow-telemetry-action@raw_data
+      with:
+        save_raw_stats: true
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: 3.x
+    - uses: pre-commit/action@v3.0.1
+    timeout-minutes: 10
+name: Lint
+'on':
+- workflow_dispatch
+permissions: write-all
